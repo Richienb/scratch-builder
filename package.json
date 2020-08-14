@@ -19,6 +19,7 @@
 	},
 	"keywords": [],
 	"dependencies": {
+		"electron-winstaller": "^4.0.1",
 		"find-cache-dir": "^3.3.1",
 		"got": "^11.5.2",
 		"html-minifier": "^4.0.0",
@@ -28,6 +29,7 @@
 		"path-extra": "^4.3.0",
 		"puppeteer": "^5.2.1",
 		"temp-dir": "^2.0.0",
+		"tempy": "^0.6.0",
 		"v8-compile-cache": "^2.1.1",
 		"write-json-file": "^4.3.0"
 	},

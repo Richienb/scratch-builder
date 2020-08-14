@@ -12,15 +12,36 @@ const projectName = require("./lib/project-name")
 
 const cli = meow(`
     Usage
-      $ scratch-builder <input>
+	  $ scratch-builder <input>
+
+    Options
+	  --widescreen, -w  Make the stage conform to a 16:9 aspect ratio.
+	  --compatibility, -c Limit the framerate to 30fps. On by default.
+	  --turbo, -t Run the scripts at the fastest possible speed.
 
     Examples
       $ scratch-builder 416145234
 `, {
-	inferType: true
+	inferType: true,
+	flags: {
+		widescreen: {
+			type: "boolean",
+			alias: "w"
+		},
+		compatibility: {
+			type: "boolean",
+			alias: "c",
+			default: true
+		},
+		turbo: {
+			type: "boolean",
+			alias: "t"
+		}
+	}
 })
 
 const [source] = cli.input
+const { widescreen, compatibility, turbo } = cli.flags
 
 module.exports = (async () => {
 	const spinner = ora("Starting build").start()
@@ -31,12 +52,14 @@ module.exports = (async () => {
 
 	spinner.text = "Building HTML"
 
-	const outputHtml = typeof source === "number" ? await buildHtml.fromId(source) : await buildHtml.fromFile(source)
+	const width = widescreen ? 640 : 480
+
+	const outputHtml = await buildHtml[typeof source === "number" ? "fromId" : "fromFile"](source, { title, width, compatibility, turbo })
 	await fs.writeFile(path.join(buildDirectory, `${title}.html`), outputHtml)
 
 	spinner.text = "Building binaries"
 
-	await buildBinaries({ files: path.join(buildDirectory, `${title}.html`), appName: title, buildDir: buildDirectory })
+	await buildBinaries({ title, buildDirectory, width })
 
 	spinner.stop()
 })()
