@@ -1,3 +1,6 @@
+# Build files
+build
+
 # Lockfiles
 
 package-lock.json
