@@ -6,9 +6,10 @@ const { promises: fs } = require("fs")
 const path = require("path-extra")
 const ora = require("ora")
 const meow = require("meow")
+const pFallback = require("p-fallback")
 const buildHtml = require("./lib/build-html")
 const buildBinaries = require("./lib/build-binaries")
-const projectName = require("./lib/project-name")
+const scratchInfo = require("./lib/scratch-info")
 
 const cli = meow(`
     Usage
@@ -45,7 +46,14 @@ const { widescreen, compatibility, turbo } = cli.flags
 
 module.exports = (async () => {
 	const spinner = ora("Starting build").start()
-	const title = typeof source === "number" ? await projectName(source) : path.base(source)
+	let projectData
+	if (typeof source === "number") {
+		projectData = await pFallback([
+			async () => scratchInfo(source),
+			() => ({})
+		])
+	}
+	const title = typeof source === "number" ? projectData.title || "Scratch Project" : path.base(source)
 	const buildDirectory = path.join(__dirname, "build")
 
 	await fs.mkdir(buildDirectory, { recursive: true })
@@ -59,7 +67,7 @@ module.exports = (async () => {
 
 	spinner.text = "Building binaries"
 
-	await buildBinaries({ title, buildDirectory, width })
+	await buildBinaries({ title, buildDirectory, width, projectData })
 
 	spinner.stop()
 })()
