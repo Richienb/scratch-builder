@@ -11,7 +11,7 @@
 		"lib"
 	],
 	"engines": {
-		"node": "^10.17 || >=11.14"
+		"node": ">=12"
 	},
 	"scripts": {
 		"lint": "xo",
@@ -19,26 +19,20 @@
 	},
 	"keywords": [],
 	"dependencies": {
-		"camelcase": "^6.0.0",
-		"electron-winstaller": "^4.0.1",
-		"find-cache-dir": "^3.3.1",
+		"file-name": "^0.1.0",
+		"file-url": "^3.0.0",
 		"got": "^11.5.2",
 		"html-minifier": "^4.0.0",
 		"meow": "^7.1.0",
-		"nw-builder": "^3.5.7",
 		"ora": "^5.0.0",
-		"p-fallback": "^1.0.0",
-		"path-extra": "^4.3.0",
 		"puppeteer": "^5.2.1",
-		"temp-dir": "^2.0.0",
-		"tempy": "^0.6.0",
-		"v8-compile-cache": "^2.1.1",
+		"workbox-build": "^5.1.4",
 		"write-json-file": "^4.3.0"
 	},
 	"devDependencies": {
-		"ava": "^3.10.1",
-		"eslint-config-richienb": "^0.4.2",
-		"xo": "^0.33.0"
+		"ava": "^3.13.0",
+		"eslint-config-richienb": "^0.5.0",
+		"xo": "^0.35.0"
 	},
 	"xo": {
 		"extends": "richienb"
